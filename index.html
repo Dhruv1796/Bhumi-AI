@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bhumi AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="authScreen" class="auth-screen">
+      <div class="auth-card">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <span>Bhumi AI</span>
+        </div>
+        <h2>Bhumi AI access</h2>
+        <p>Sign in to continue</p>
+        <form id="loginForm" class="login-form">
+          <label>
+            Username
+            <input id="username" type="text" value="admin" required />
+          </label>
+          <label>
+            Password
+            <input id="password" type="password" value="admin123" required />
+          </label>
+          <button type="submit" class="primary-btn full-width">Sign in</button>
+          <div id="loginError" class="login-error"></div>
+          <small>Demo access: admin / admin123 or inspector / inspector123</small>
+        </form>
+      </div>
+    </div>
+
+    <div id="appShell" class="app-shell hidden">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <span>Bhumi AI</span>
+        </div>
+
+        <nav class="nav">
+          <div class="nav-label">Navigation</div>
+          <button class="nav-item active" data-view="dashboard">
+            <span class="icon">◔</span>
+            Dashboard
+          </button>
+          <button class="nav-item" data-view="records">
+            <span class="icon">◎</span>
+            Records
+          </button>
+          <button class="nav-item" data-view="map">
+            <span class="icon">⌖</span>
+            Map
+          </button>
+          <button class="nav-item" data-view="upload">
+            <span class="icon">◌</span>
+            Upload
+          </button>
+          <button class="nav-item" data-view="reports">
+            <span class="icon">◍</span>
+            Reports
+          </button>
+          <button class="nav-item" data-view="settings">
+            <span class="icon">◐</span>
+            Settings
+          </button>
+        </nav>
+
+        <div class="user-card">
+          <div class="user-avatar">AW</div>
+          <div>
+            <div class="user-name">Alex Williamson</div>
+            <div class="user-role">#data-1974</div>
+          </div>
+          <button id="logoutButton" class="secondary-btn logout-btn" type="button">Sign out</button>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <h1 id="pageTitle">Dashboard</h1>
+          <button id="addRecordButton" class="primary-btn" type="button">Add Record</button>
+        </header>
+        <div id="appNotice" class="app-notice hidden" role="status" aria-live="polite"></div>
+
+        <section class="view-panel active" data-view="dashboard">
+          <div class="stats-grid" id="metricsGrid"></div>
+
+          <div class="panel live-map-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Live Land Records Map</h3>
+                <p class="map-caption" id="dashboardMapCaption">Loading geospatial records…</p>
+              </div>
+              <div class="live-map-status"><span class="live-indicator"></span><span id="liveMapUpdated">Connecting</span></div>
+            </div>
+            <div id="dashboardMap" role="application" aria-label="Live map of georeferenced land records"></div>
+            <div class="map-empty-state" id="dashboardMapEmpty">No parcel boundaries or coordinate-backed records are loaded.</div>
+          </div>
+
+          <div class="records-section">
+            <div class="panel table-panel">
+              <div class="panel-header">
+                <h3>Recent Land Records</h3>
+                <button id="exportRecordsButton" class="secondary-btn" type="button">Export CSV</button>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Record ID</th>
+                    <th>Village</th>
+                    <th>Owner</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                  </tr>
+                </thead>
+                <tbody id="recordsTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="panel upload-panel">
+              <div class="panel-header">
+                <h3>Upload Document</h3>
+              </div>
+              <form id="uploadForm">
+                <label>
+                  Record ID
+                  <input type="text" name="recordId" placeholder="LR-2026-1042" required />
+                </label>
+                <label>
+                  Owner Name
+                  <input type="text" name="owner" placeholder="Owner name" required />
+                </label>
+                <label>
+                  Village / Block
+                  <input type="text" name="village" placeholder="Kharad" required />
+                </label>
+                <div class="coordinate-fields">
+                  <label>Latitude<input type="number" name="latitude" min="-90" max="90" step="any" placeholder="e.g. 16.8524" /></label>
+                  <label>Longitude<input type="number" name="longitude" min="-180" max="180" step="any" placeholder="e.g. 74.5815" /></label>
+                </div>
+                <label>
+                  Document Type
+                  <select name="documentType">
+                    <option>Mutation Record</option>
+                    <option>Ownership Deed</option>
+                    <option>Survey Map</option>
+                    <option>Khatauni</option>
+                  </select>
+                </label>
+                <label>
+                  Upload file
+                  <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg" />
+                </label>
+                <button type="submit" class="primary-btn full-width">Save Record</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section class="view-panel" data-view="records">
+          <div class="content-grid">
+            <div class="panel wide-panel">
+              <div class="panel-header">
+                <h3>Land Record Registry</h3>
+                <label class="filter-label">
+                  Filter records
+                  <input id="recordSearch" type="search" placeholder="Search ID, owner, village..." />
+                </label>
+              </div>
+              <table class="record-table-large">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Village</th>
+                    <th>Owner</th>
+                    <th>Document</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="registryTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="view-panel" data-view="map">
+          <div class="panel map-panel">
+            <div class="panel-header">
+              <div>
+                <h3>Geospatial Records</h3>
+                <p class="map-caption" id="mapCaption">Import cadastral GeoJSON or add coordinates to records.</p>
+              </div>
+              <div class="map-actions">
+                <label class="secondary-btn geojson-upload">
+                  Import GeoJSON
+                  <input id="parcelFileInput" type="file" accept=".geojson,.json,application/geo+json,application/json" />
+                </label>
+                <span class="map-source">OpenStreetMap</span>
+              </div>
+            </div>
+            <div id="recordsMap" role="application" aria-label="Map of georeferenced land records"></div>
+            <div id="mapEmptyState" class="map-empty-state">No parcel boundaries or coordinate-backed records are loaded.</div>
+            <div id="parcelImportStatus" class="map-caption" role="status"></div>
+          </div>
+        </section>
+
+        <section class="view-panel" data-view="upload">
+          <div class="content-grid two-column">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Digitization Intake</h3>
+              </div>
+              <form id="uploadFormSecondary" class="stack-form">
+                <label>
+                  Record ID
+                  <input type="text" name="recordId" placeholder="LR-2026-2001" required />
+                </label>
+                <label>
+                  Owner Name
+                  <input type="text" name="owner" placeholder="Owner name" required />
+                </label>
+                <label>
+                  Village
+                  <input type="text" name="village" placeholder="Village" required />
+                </label>
+                <div class="coordinate-fields">
+                  <label>Latitude<input type="number" name="latitude" min="-90" max="90" step="any" placeholder="e.g. 16.8524" /></label>
+                  <label>Longitude<input type="number" name="longitude" min="-180" max="180" step="any" placeholder="e.g. 74.5815" /></label>
+                </div>
+                <label>
+                  Document Category
+                  <select name="documentType">
+                    <option>Mutation Record</option>
+                    <option>Ownership Deed</option>
+                    <option>Survey Map</option>
+                    <option>Khatauni</option>
+                  </select>
+                </label>
+                <label>
+                  Select PDF/Image
+                  <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg" />
+                </label>
+                <button type="submit" class="primary-btn full-width">Save Record &amp; Document</button>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Review &amp; Documents</h3>
+              </div>
+              <div id="reviewQueue" class="queue-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view-panel" data-view="reports">
+          <div class="report-grid">
+            <div class="panel stat-box">
+              <span class="mini-label">Approved Records</span>
+              <strong id="approvedToday">0</strong>
+            </div>
+            <div class="panel stat-box">
+              <span class="mini-label">Pending Review</span>
+              <strong id="pendingToday">0</strong>
+            </div>
+            <div class="panel stat-box">
+              <span class="mini-label">Document OCR</span>
+              <strong id="ocrConfidence">Not configured</strong>
+            </div>
+          </div>
+
+          <div class="panel wide-panel">
+            <div class="panel-header">
+              <h3>Record Status Summary</h3>
+            </div>
+            <div class="bar-chart" id="reportChart"></div>
+          </div>
+        </section>
+
+        <section class="view-panel" data-view="settings">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>System Settings</h3>
+            </div>
+            <ul class="settings-list">
+              <li>Authentication: demo accounts (local development only)</li>
+              <li>Record storage: local SQLite database</li>
+              <li>Parcel layers: persisted as GeoJSON on this server</li>
+              <li>OCR processing: not configured; uploaded files are stored for review</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </div>
+    <dialog id="recordDialog" class="record-dialog">
+      <div class="panel-header">
+        <h3 id="recordDialogTitle">Record details</h3>
+        <button id="closeRecordDialog" class="secondary-btn" type="button">Close</button>
+      </div>
+      <div id="recordDialogContent"></div>
+    </dialog>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

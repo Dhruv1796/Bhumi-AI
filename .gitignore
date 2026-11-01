@@ -1,0 +1,17 @@
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+.env*
+!.env.example
+
+data/*.db
+data/*.db-*
+data/uploads/
+data/parcels.geojson
+
+Bhoomi_AI_Project_Overview.pptx
+Land_Record_Digitisation_PRD.docx
+SIH  (1).pdf
+22bf854acae56d81d4574335650137ff.jpg
+read_prd.py

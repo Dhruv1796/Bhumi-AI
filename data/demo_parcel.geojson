@@ -1,0 +1,27 @@
+{
+  "type": "FeatureCollection",
+  "name": "Illustrative demo parcel",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "parcel_id": "DEMO-PARCEL-001",
+        "survey_no": "DEMO-001",
+        "village": "Illustrative Demo Area",
+        "source": "Synthetic map preview geometry; not a cadastral survey"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [75.7135, 19.7513],
+            [75.7140, 19.7513],
+            [75.7140, 19.7517],
+            [75.7135, 19.7517],
+            [75.7135, 19.7513]
+          ]
+        ]
+      }
+    }
+  ]
+}

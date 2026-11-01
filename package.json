@@ -1,0 +1,21 @@
+{
+  "name": "bhoomi-ai",
+  "version": "1.0.0",
+  "description": "Land record digitization dashboard backend and frontend integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "bhoomi",
+    "land-records",
+    "digitization"
+  ],
+  "author": "Bhoomi AI",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "metrics": [
+    {
+      "label": "Records Processed",
+      "value": "14,820",
+      "change": "12.4%",
+      "trendDirection": "up",
+      "color": "#45c77d",
+      "line": "M2 16 C14 18, 22 9, 30 10 S46 20, 58 12 S70 6, 78 9"
+    },
+    {
+      "label": "OCR Accuracy",
+      "value": "96.3%",
+      "change": "4.8%",
+      "trendDirection": "up",
+      "color": "#4cc6a5",
+      "line": "M2 12 C12 10, 24 15, 34 17 S48 8, 58 10 S72 16, 78 12"
+    },
+    {
+      "label": "Approval Rate",
+      "value": "89.1%",
+      "change": "1.2%",
+      "trendDirection": "down",
+      "color": "#f4a261",
+      "line": "M2 15 C10 16, 24 10, 34 12 S48 13, 58 8 S70 9, 78 14"
+    }
+  ],
+  "records": [
+    {
+      "id": "LR-2048-011",
+      "village": "Kharad",
+      "owner": "Suresh Patil",
+      "status": "Approved",
+      "progress": 100
+    },
+    {
+      "id": "LR-2048-012",
+      "village": "Nandgaon",
+      "owner": "Anita Jadhav",
+      "status": "In Review",
+      "progress": 72
+    },
+    {
+      "id": "LR-2048-013",
+      "village": "Shirpur",
+      "owner": "Ramesh Pawar",
+      "status": "Pending",
+      "progress": 48
+    },
+    {
+      "id": "LR-2048-014",
+      "village": "Babhulgaon",
+      "owner": "Nisha Deshmukh",
+      "status": "Approved",
+      "progress": 91
+    },
+    {
+      "id": "LR-2048-015",
+      "village": "Wadgaon",
+      "owner": "Vijay Suryavanshi",
+      "status": "Review",
+      "progress": 64
+    }
+  ]
+}
